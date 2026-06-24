@@ -24,8 +24,8 @@ header{background:#FA0050;padding:0 28px;display:flex;align-items:center;justify
 .st{font-size:20px;font-weight:700;color:#fff;line-height:1;}
 .sni{font-size:11px;font-weight:600;color:#FFE864;}
 .sync-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-.sync-status{font-size:12px;color:#555;}
-.sync-btn{font-size:12px;padding:5px 12px;cursor:pointer;background:#fff;color:#555;border:1px solid #ddd;border-radius:7px;transition:all .15s;}
+.sync-status{font-size:12px;color:#666;}
+.sync-btn{font-size:12px;padding:5px 14px;cursor:pointer;background:#fff;color:#555;border:1px solid #ddd;border-radius:7px;transition:all .15s;}
 .sync-btn:hover{border-color:#FA0050;color:#FA0050;}
 .tabs{display:flex;background:#fff;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;width:fit-content;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
 .tab{font-family:'Inter',sans-serif;font-size:13px;padding:7px 18px;cursor:pointer;background:transparent;color:#888;border:none;font-weight:500;transition:all .15s;}
@@ -54,6 +54,7 @@ header{background:#FA0050;padding:0 28px;display:flex;align-items:center;justify
 .plbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#aaa;}
 .psel{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:7px 9px;background:#f5f5f5;color:#100423;border:1px solid #ddd;border-radius:6px;cursor:pointer;width:100%;appearance:none;-webkit-appearance:none;}
 .psel:focus{outline:none;border-color:#FA0050;background:#fff;}
+.psel:disabled{opacity:.5;cursor:not-allowed;}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
 .pcard{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:15px;border-top:3px solid #e0e0e0;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .pcard.main{border-top-color:#FA0050;}
@@ -67,6 +68,8 @@ header{background:#FA0050;padding:0 28px;display:flex;align-items:center;justify
 .pmrow{display:flex;align-items:flex-start;gap:7px;}
 .pmdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
 .hidden{display:none!important;}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid #ddd;border-top-color:#FA0050;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:4px;}
+@keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:680px){
   header{height:auto;padding:12px 16px;}.content{padding:14px 16px;border-radius:10px 10px 0 0;}
   .mc{grid-template-columns:68px 1fr;grid-template-rows:auto auto;gap:8px;}
@@ -80,16 +83,16 @@ header{background:#FA0050;padding:0 28px;display:flex;align-items:center;justify
     <div class="py-p">P</div>
     <div class="py-txt">PedidosYa</div>
     <div class="hdiv"></div>
-    <div class="hsub">Guardias · Mundial 2026</div>
+    <div class="hsub">Guardias &middot; Mundial 2026</div>
   </div>
-  <div class="hmeta">Brand &amp; CE Team<br>23–27 jun · GMT-3</div>
+  <div class="hmeta">Brand &amp; CE Team<br>23&ndash;27 jun &middot; GMT-3</div>
 </header>
 
 <div class="content">
 
 <div class="sync-row">
-  <span class="sync-status" id="sync-status">Cargando...</span>
-  <button class="sync-btn" onclick="loadAndRender()">&#8635; Actualizar</button>
+  <span class="sync-status" id="sync-status"><span class="spinner"></span> Cargando desde Google Sheets...</span>
+  <button class="sync-btn" onclick="loadFromSheet()">&#8635; Actualizar</button>
 </div>
 
 <div class="sbar" id="sbar"></div>
@@ -102,8 +105,8 @@ header{background:#FA0050;padding:0 28px;display:flex;align-items:center;justify
 <div class="legend">
   <div class="leg"><div class="ld" style="background:#378ADD"></div>Argentina (no cuenta)</div>
   <div class="leg"><div class="ld" style="background:#1D9E75"></div>Prioritario</div>
-  <div class="leg"><div class="ld" style="background:#D97706"></div>Simultáneos</div>
-  <div class="leg"><div class="ld" style="background:#92400E"></div>Noche ≥19hs</div>
+  <div class="leg"><div class="ld" style="background:#D97706"></div>Simult&aacute;neos</div>
+  <div class="leg"><div class="ld" style="background:#92400E"></div>Noche &ge;19hs</div>
 </div>
 
 <div id="cal"></div>
@@ -112,42 +115,43 @@ header{background:#FA0050;padding:0 28px;display:flex;align-items:center;justify
 </div>
 
 <script>
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwNh1_g3PKG2LAXe8gEFrmQHY5-Np_yVI2i6XYWl1xtaP0OMajnj2aRrZegK-Si47yL/exec';
 const PEOPLE=['Pasti','Sol','Vicky','Estefi','Evi'];
 const MAIN=['Pasti','Sol','Vicky'];
 
 const FIXTURE=[
-  {date:'2026-06-23',time:'14:00',t1:'Portugal',t2:'Uzbekistán',g:'K'},
+  {date:'2026-06-23',time:'14:00',t1:'Portugal',t2:'Uzbekist\u00e1n',g:'K'},
   {date:'2026-06-23',time:'17:00',t1:'Inglaterra',t2:'Ghana',g:'L'},
-  {date:'2026-06-23',time:'20:00',t1:'Panamá',t2:'Croacia',g:'L'},
+  {date:'2026-06-23',time:'20:00',t1:'Panam\u00e1',t2:'Croacia',g:'L'},
   {date:'2026-06-23',time:'23:00',t1:'Colombia',t2:'RD de Congo',g:'K'},
-  {date:'2026-06-24',time:'16:00',t1:'Suiza',t2:'Canadá',g:'B'},
+  {date:'2026-06-24',time:'16:00',t1:'Suiza',t2:'Canad\u00e1',g:'B'},
   {date:'2026-06-24',time:'16:00',t1:'Bosnia y Herz.',t2:'Qatar',g:'B'},
-  {date:'2026-06-24',time:'19:00',t1:'Marruecos',t2:'Haití',g:'C'},
+  {date:'2026-06-24',time:'19:00',t1:'Marruecos',t2:'Hait\u00ed',g:'C'},
   {date:'2026-06-24',time:'19:00',t1:'Brasil',t2:'Escocia',g:'C'},
-  {date:'2026-06-24',time:'22:00',t1:'Sudáfrica',t2:'Corea del Sur',g:'A'},
-  {date:'2026-06-24',time:'22:00',t1:'Rep. Checa',t2:'México',g:'A'},
+  {date:'2026-06-24',time:'22:00',t1:'Sud\u00e1frica',t2:'Corea del Sur',g:'A'},
+  {date:'2026-06-24',time:'22:00',t1:'Rep. Checa',t2:'M\u00e9xico',g:'A'},
   {date:'2026-06-25',time:'17:00',t1:'Curazao',t2:'Costa de Marfil',g:'E'},
   {date:'2026-06-25',time:'17:00',t1:'Ecuador',t2:'Alemania',g:'E'},
-  {date:'2026-06-25',time:'20:00',t1:'Japón',t2:'Suecia',g:'F'},
-  {date:'2026-06-25',time:'20:00',t1:'Túnez',t2:'Países Bajos',g:'F'},
+  {date:'2026-06-25',time:'20:00',t1:'Jap\u00f3n',t2:'Suecia',g:'F'},
+  {date:'2026-06-25',time:'20:00',t1:'T\u00fanez',t2:'Pa\u00edses Bajos',g:'F'},
   {date:'2026-06-25',time:'23:00',t1:'Paraguay',t2:'Australia',g:'D'},
-  {date:'2026-06-25',time:'23:00',t1:'Turquía',t2:'Estados Unidos',g:'D'},
+  {date:'2026-06-25',time:'23:00',t1:'Turqu\u00eda',t2:'Estados Unidos',g:'D'},
   {date:'2026-06-26',time:'16:00',t1:'Noruega',t2:'Francia',g:'I'},
   {date:'2026-06-26',time:'16:00',t1:'Senegal',t2:'Irak',g:'I'},
   {date:'2026-06-26',time:'21:00',t1:'Cabo Verde',t2:'Arabia Saudita',g:'H'},
-  {date:'2026-06-26',time:'21:00',t1:'Uruguay',t2:'España',g:'H'},
-  {date:'2026-06-27',time:'00:00',t1:'Egipto',t2:'Irán',g:'G'},
-  {date:'2026-06-27',time:'00:00',t1:'Nueva Zelanda',t2:'Bélgica',g:'G'},
+  {date:'2026-06-26',time:'21:00',t1:'Uruguay',t2:'Espa\u00f1a',g:'H'},
+  {date:'2026-06-27',time:'00:00',t1:'Egipto',t2:'Ir\u00e1n',g:'G'},
+  {date:'2026-06-27',time:'00:00',t1:'Nueva Zelanda',t2:'B\u00e9lgica',g:'G'},
   {date:'2026-06-27',time:'18:00',t1:'Croacia',t2:'Ghana',g:'L'},
-  {date:'2026-06-27',time:'18:00',t1:'Panamá',t2:'Inglaterra',g:'L'},
+  {date:'2026-06-27',time:'18:00',t1:'Panam\u00e1',t2:'Inglaterra',g:'L'},
   {date:'2026-06-27',time:'20:30',t1:'Colombia',t2:'Portugal',g:'K'},
-  {date:'2026-06-27',time:'20:30',t1:'RD de Congo',t2:'Uzbekistán',g:'K'},
+  {date:'2026-06-27',time:'20:30',t1:'RD de Congo',t2:'Uzbekist\u00e1n',g:'K'},
   {date:'2026-06-27',time:'23:00',t1:'Argelia',t2:'Austria',g:'J'},
   {date:'2026-06-27',time:'23:00',t1:'Jordania',t2:'Argentina',g:'J',arg:true},
 ];
 
-const STORAGE_KEY='py_guardias_mundial26_v1';
 let matches=FIXTURE.map((m,i)=>({...m,id:i,g1:'',g2:'',simGroup:null,arg:m.arg||false}));
+let saving=false;
 
 function detectSim(){
   const by={};
@@ -158,13 +162,12 @@ function detectSim(){
 
 function isNight(m){const h=parseInt(m.time);return h>=19||h===0||h===1;}
 function isArg(m){return m.arg;}
-function isPrio(m){return['Brasil','Francia','Alemania','Inglaterra','Portugal','Uruguay','España'].some(t=>m.t1.includes(t)||m.t2.includes(t));}
+function isPrio(m){return['Brasil','Francia','Alemania','Inglaterra','Portugal','Uruguay','Espa\u00f1a'].some(t=>m.t1.includes(t)||m.t2.includes(t));}
 function vickyAvail(m){return!['2026-06-23','2026-06-24'].includes(m.date);}
 function avail(p,m){if(p==='Vicky')return vickyAvail(m);return true;}
-
 function isPastiBlocked(m){
-  if(m.date==='2026-06-23'&&isNight(m)) return true;
-  if(m.date==='2026-06-25'&&m.time==='20:00'&&(m.t1.includes('Túnez')||m.t2.includes('Países'))) return true;
+  if(m.date==='2026-06-23'&&isNight(m))return true;
+  if(m.date==='2026-06-25'&&m.time==='20:00'&&m.t2.includes('Pa\u00edses'))return true;
   return false;
 }
 
@@ -182,13 +185,7 @@ function buildDefault(){
   PEOPLE.forEach(p=>{load[p]=0;nload[p]=0;});
   const sd={};
   const bl=getBlocks();
-
-  function blocked(p,m){
-    if(!avail(p,m)) return true;
-    if(p==='Pasti'&&isPastiBlocked(m)) return true;
-    return false;
-  }
-
+  function blocked(p,m){if(!avail(p,m))return true;if(p==='Pasti'&&isPastiBlocked(m))return true;return false;}
   function asgn(b){
     if(b.simGroup!==null&&sd[b.simGroup]!==undefined){
       const r=sd[b.simGroup];
@@ -203,70 +200,84 @@ function buildDefault(){
     const g2=pool2.length?pool2[0]:(PEOPLE.find(p=>p!==g1)||'Estefi');
     if(!b.arg){load[g1]++;load[g2]++;if(isNight(b)){nload[g1]++;nload[g2]++;}}
     const res={g1,g2};
-    if(b.simGroup!==null) sd[b.simGroup]=res;
-    if(b.simGroup!==null) matches.forEach(m=>{if(m.simGroup===b.simGroup){m.g1=res.g1;m.g2=res.g2;}});
+    if(b.simGroup!==null)sd[b.simGroup]=res;
+    if(b.simGroup!==null)matches.forEach(m=>{if(m.simGroup===b.simGroup){m.g1=res.g1;m.g2=res.g2;}});
     else{matches[b.id].g1=res.g1;matches[b.id].g2=res.g2;}
   }
-
   bl.filter(b=>!b.arg).sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time)).forEach(b=>asgn(b));
   bl.filter(b=>b.arg).forEach(b=>asgn(b));
-
-  // Rotar posición para no revelar patrón principal
   let rot=0;
-  matches.filter(m=>m.g1&&!m.arg).forEach(m=>{
-    if(rot%2===1){const t=m.g1;m.g1=m.g2;m.g2=t;}
-    rot++;
-  });
-
-  return matches.map(m=>({id:m.id,g1:m.g1,g2:m.g2}));
+  matches.filter(m=>m.g1&&!m.arg).forEach(m=>{if(rot%2===1){const t=m.g1;m.g1=m.g2;m.g2=t;}rot++;});
 }
 
-function applyData(data){
-  data.forEach(d=>{
-    const m=matches.find(x=>x.id===d.id);
-    if(m){m.g1=d.g1;m.g2=d.g2;}
+// Sheet rows: id, g1, g2
+function sheetToMatches(rows){
+  rows.forEach(row=>{
+    if(!row[0]&&row[0]!==0)return;
+    const m=matches.find(x=>x.id===parseInt(row[0]));
+    if(m){m.g1=row[1]||'';m.g2=row[2]||'';}
   });
 }
 
-function saveLocal(data){
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}catch(e){}
+function matchesToRows(){
+  return matches.map(m=>[m.id,m.g1,m.g2]);
 }
 
-function loadLocal(){
-  try{const v=localStorage.getItem(STORAGE_KEY);return v?JSON.parse(v):null;}catch(e){return null;}
-}
+function setStatus(html){document.getElementById('sync-status').innerHTML=html;}
+function now(){return new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});}
 
-function setStatus(txt){document.getElementById('sync-status').innerHTML=txt;}
-
-function loadAndRender(){
-  setStatus('Cargando...');
-  const local=loadLocal();
-  if(local){
-    applyData(local);
-    setStatus('&#10003; Actualizado &middot; '+new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}));
-  } else {
-    const def=buildDefault();
-    applyData(def);
-    saveLocal(def);
-    setStatus('&#10003; Distribución inicial lista');
+async function loadFromSheet(){
+  setStatus('<span class="spinner"></span> Actualizando...');
+  try{
+    const res=await fetch(SCRIPT_URL+'?action=get',{method:'GET'});
+    const data=await res.json();
+    if(data&&data.length>0){
+      sheetToMatches(data);
+      setStatus('&#10003; Actualizado &middot; '+now());
+    } else {
+      // Sheet vac&iacute;o, subir defaults
+      buildDefault();
+      await saveToSheet();
+    }
+  }catch(e){
+    // Fallback local
+    buildDefault();
+    setStatus('&#9888; Sin conexi&oacute;n con Sheet &middot; mostrando distribuci&oacute;n local');
   }
   render();
 }
 
-function onChange(id,field,val){
+async function saveToSheet(){
+  if(saving)return;
+  saving=true;
+  setStatus('<span class="spinner"></span> Guardando...');
+  try{
+    const rows=matchesToRows();
+    await fetch(SCRIPT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'set',rows})
+    });
+    setStatus('&#10003; Guardado en Sheet &middot; '+now());
+  }catch(e){
+    setStatus('&#9888; Error al guardar');
+  }
+  saving=false;
+}
+
+async function onChange(id,field,val){
   matches[id][field]=val;
   const sg=matches[id].simGroup;
-  if(sg!==null) matches.forEach(m=>{if(m.simGroup===sg&&m.id!==id)m[field]=val;});
-  const data=matches.map(m=>({id:m.id,g1:m.g1,g2:m.g2}));
-  saveLocal(data);
-  setStatus('&#10003; Guardado &middot; '+new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}));
+  if(sg!==null)matches.forEach(m=>{if(m.simGroup===sg&&m.id!==id)m[field]=val;});
   render();
+  await saveToSheet();
 }
 
 function fmtD(d){
   const[y,mo,da]=d.split('-');
   const months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  const days=['dom','lun','mar','mi&eacute;','jue','vie','s&aacute;b'];
+  const days=['dom','lun','mar','mi\u00e9','jue','vie','s\u00e1b'];
   return days[new Date(+y,+mo-1,+da).getDay()].toUpperCase()+' '+da+' '+months[+mo-1].toUpperCase();
 }
 
@@ -314,8 +325,8 @@ function renderCal(){
       h+=`<div class="${cc(m)}">
         <div><div class="mtime">${m.time} hs</div><div class="mtags">${tags.join('')}</div></div>
         <div><div class="mteams">${m.t1} vs ${m.t2}</div><div class="mgroup">Grupo ${m.g}</div></div>
-        <div class="pc"><div class="plbl">Guardia 1</div><select class="psel" onchange="onChange(${m.id},'g1',this.value)"><option value="">—</option>${g1o}</select></div>
-        <div class="pc"><div class="plbl">Guardia 2</div><select class="psel" onchange="onChange(${m.id},'g2',this.value)"><option value="">—</option>${g2o}</select></div>
+        <div class="pc"><div class="plbl">Guardia 1</div><select class="psel" onchange="onChange(${m.id},'g1',this.value)"><option value="">&#8212;</option>${g1o}</select></div>
+        <div class="pc"><div class="plbl">Guardia 2</div><select class="psel" onchange="onChange(${m.id},'g2',this.value)"><option value="">&#8212;</option>${g2o}</select></div>
       </div>`;
     });
     h+='</div>';
@@ -339,7 +350,7 @@ function renderPer(){
       <div class="pch"><div class="pcname">${p}</div></div>
       <div class="pcstats">
         <span class="ppill ptot">${gc[p]} partidos</span>
-        <span class="ppill pnig">&#127761; ${nc[p]} noches</span>
+        <span class="ppill pnig">&#127761; ${nc[p]}</span>
       </div>
       <div class="pcmatches">`;
     if(!my.length){h+='<span style="color:#ccc">Sin asignaciones</span>';}
@@ -363,7 +374,7 @@ function sv(v){
 }
 
 detectSim();
-loadAndRender();
+loadFromSheet();
 </script>
 </body>
 </html>
