@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardias Mundial 2026 — PedidosYa</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#FA0050;color:#100423;min-height:100vh;}
+header{background:#FA0050;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;flex-wrap:wrap;gap:8px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.py-p{width:34px;height:34px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#FA0050;flex-shrink:0;}
+.py-txt{font-size:17px;font-weight:700;color:#fff;}
+.hdiv{width:1px;height:24px;background:rgba(255,255,255,.3);margin:0 4px;}
+.hsub{font-size:13px;font-weight:500;color:rgba(255,255,255,.8);}
+.hmeta{font-size:11px;color:rgba(255,255,255,.65);text-align:right;line-height:1.5;}
+.content{background:#f4f4f4;border-radius:14px 14px 0 0;padding:22px 28px;min-height:calc(100vh - 60px);}
+.sbar{background:#100423;border-radius:10px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:0;overflow-x:auto;}
+.si{display:flex;flex-direction:column;gap:2px;padding:0 16px;border-right:1px solid rgba(255,255,255,.1);flex-shrink:0;}
+.si:first-child{padding-left:0;}.si:last-child{border-right:none;}
+.sn{font-size:10px;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.07em;}
+.sv{display:flex;align-items:baseline;gap:6px;}
+.st{font-size:20px;font-weight:700;color:#fff;line-height:1;}
+.sni{font-size:11px;font-weight:600;color:#FFE864;}
+.sync-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.sync-status{font-size:12px;color:#555;}
+.sync-btn{font-size:12px;padding:5px 12px;cursor:pointer;background:#fff;color:#555;border:1px solid #ddd;border-radius:7px;transition:all .15s;}
+.sync-btn:hover{border-color:#FA0050;color:#FA0050;}
+.tabs{display:flex;background:#fff;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;width:fit-content;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.tab{font-family:'Inter',sans-serif;font-size:13px;padding:7px 18px;cursor:pointer;background:transparent;color:#888;border:none;font-weight:500;transition:all .15s;}
+.tab.active{background:#FA0050;color:#fff;font-weight:600;}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
+.leg{display:flex;align-items:center;gap:5px;font-size:12px;color:#777;}
+.ld{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.day-block{margin-bottom:20px;}
+.day-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#999;padding:5px 0 8px;border-bottom:2px solid rgba(0,0,0,.07);margin-bottom:8px;}
+.mc{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:11px 14px;margin-bottom:7px;display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:10px;align-items:center;border-left:4px solid #e0e0e0;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.mc.arg{border-left-color:#378ADD;background:#f0f7ff;}
+.mc.prio{border-left-color:#1D9E75;}
+.mc.sim{border-left-color:#D97706;}
+.mc.night{background:#fafaf7;}
+.mc.arg.night{background:#eaf4fe;}
+.mtime{font-size:14px;font-weight:700;color:#100423;}
+.mtags{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;}
+.tag{font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;}
+.tnight{background:#FEF3C7;color:#92400E;}
+.targ{background:#DBEAFE;color:#1E40AF;}
+.tsim{background:#FEF9C3;color:#713F12;}
+.tprio{background:#DCFCE7;color:#14532D;}
+.mteams{font-size:13px;font-weight:600;color:#100423;line-height:1.3;}
+.mgroup{font-size:11px;color:#999;margin-top:2px;}
+.pc{display:flex;flex-direction:column;gap:3px;}
+.plbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#aaa;}
+.psel{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:7px 9px;background:#f5f5f5;color:#100423;border:1px solid #ddd;border-radius:6px;cursor:pointer;width:100%;appearance:none;-webkit-appearance:none;}
+.psel:focus{outline:none;border-color:#FA0050;background:#fff;}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
+.pcard{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:15px;border-top:3px solid #e0e0e0;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.pcard.main{border-top-color:#FA0050;}
+.pch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #f0f0f0;}
+.pcname{font-size:15px;font-weight:700;color:#100423;}
+.pcstats{display:flex;gap:7px;margin-bottom:10px;}
+.ppill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;}
+.ptot{background:#f0f0f0;color:#555;}
+.pnig{background:#FEF3C7;color:#92400E;}
+.pcmatches{font-size:12px;color:#888;line-height:1.9;}
+.pmrow{display:flex;align-items:flex-start;gap:7px;}
+.pmdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.hidden{display:none!important;}
+@media(max-width:680px){
+  header{height:auto;padding:12px 16px;}.content{padding:14px 16px;border-radius:10px 10px 0 0;}
+  .mc{grid-template-columns:68px 1fr;grid-template-rows:auto auto;gap:8px;}
+  .pc:nth-child(3){grid-column:1;}.pc:nth-child(4){grid-column:2;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="py-p">P</div>
+    <div class="py-txt">PedidosYa</div>
+    <div class="hdiv"></div>
+    <div class="hsub">Guardias · Mundial 2026</div>
+  </div>
+  <div class="hmeta">Brand &amp; CE Team<br>23–27 jun · GMT-3</div>
+</header>
+
+<div class="content">
+
+<div class="sync-row">
+  <span class="sync-status" id="sync-status">Cargando...</span>
+  <button class="sync-btn" onclick="loadAndRender()">&#8635; Actualizar</button>
+</div>
+
+<div class="sbar" id="sbar"></div>
+
+<div class="tabs">
+  <button class="tab active" onclick="sv('cal')">Por fecha</button>
+  <button class="tab" onclick="sv('per')">Por persona</button>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="ld" style="background:#378ADD"></div>Argentina (no cuenta)</div>
+  <div class="leg"><div class="ld" style="background:#1D9E75"></div>Prioritario</div>
+  <div class="leg"><div class="ld" style="background:#D97706"></div>Simultáneos</div>
+  <div class="leg"><div class="ld" style="background:#92400E"></div>Noche ≥19hs</div>
+</div>
+
+<div id="cal"></div>
+<div id="per" class="hidden"></div>
+
+</div>
+
+<script>
+const PEOPLE=['Pasti','Sol','Vicky','Estefi','Evi'];
+const MAIN=['Pasti','Sol','Vicky'];
+
+const FIXTURE=[
+  {date:'2026-06-23',time:'14:00',t1:'Portugal',t2:'Uzbekistán',g:'K'},
+  {date:'2026-06-23',time:'17:00',t1:'Inglaterra',t2:'Ghana',g:'L'},
+  {date:'2026-06-23',time:'20:00',t1:'Panamá',t2:'Croacia',g:'L'},
+  {date:'2026-06-23',time:'23:00',t1:'Colombia',t2:'RD de Congo',g:'K'},
+  {date:'2026-06-24',time:'16:00',t1:'Suiza',t2:'Canadá',g:'B'},
+  {date:'2026-06-24',time:'16:00',t1:'Bosnia y Herz.',t2:'Qatar',g:'B'},
+  {date:'2026-06-24',time:'19:00',t1:'Marruecos',t2:'Haití',g:'C'},
+  {date:'2026-06-24',time:'19:00',t1:'Brasil',t2:'Escocia',g:'C'},
+  {date:'2026-06-24',time:'22:00',t1:'Sudáfrica',t2:'Corea del Sur',g:'A'},
+  {date:'2026-06-24',time:'22:00',t1:'Rep. Checa',t2:'México',g:'A'},
+  {date:'2026-06-25',time:'17:00',t1:'Curazao',t2:'Costa de Marfil',g:'E'},
+  {date:'2026-06-25',time:'17:00',t1:'Ecuador',t2:'Alemania',g:'E'},
+  {date:'2026-06-25',time:'20:00',t1:'Japón',t2:'Suecia',g:'F'},
+  {date:'2026-06-25',time:'20:00',t1:'Túnez',t2:'Países Bajos',g:'F'},
+  {date:'2026-06-25',time:'23:00',t1:'Paraguay',t2:'Australia',g:'D'},
+  {date:'2026-06-25',time:'23:00',t1:'Turquía',t2:'Estados Unidos',g:'D'},
+  {date:'2026-06-26',time:'16:00',t1:'Noruega',t2:'Francia',g:'I'},
+  {date:'2026-06-26',time:'16:00',t1:'Senegal',t2:'Irak',g:'I'},
+  {date:'2026-06-26',time:'21:00',t1:'Cabo Verde',t2:'Arabia Saudita',g:'H'},
+  {date:'2026-06-26',time:'21:00',t1:'Uruguay',t2:'España',g:'H'},
+  {date:'2026-06-27',time:'00:00',t1:'Egipto',t2:'Irán',g:'G'},
+  {date:'2026-06-27',time:'00:00',t1:'Nueva Zelanda',t2:'Bélgica',g:'G'},
+  {date:'2026-06-27',time:'18:00',t1:'Croacia',t2:'Ghana',g:'L'},
+  {date:'2026-06-27',time:'18:00',t1:'Panamá',t2:'Inglaterra',g:'L'},
+  {date:'2026-06-27',time:'20:30',t1:'Colombia',t2:'Portugal',g:'K'},
+  {date:'2026-06-27',time:'20:30',t1:'RD de Congo',t2:'Uzbekistán',g:'K'},
+  {date:'2026-06-27',time:'23:00',t1:'Argelia',t2:'Austria',g:'J'},
+  {date:'2026-06-27',time:'23:00',t1:'Jordania',t2:'Argentina',g:'J',arg:true},
+];
+
+const STORAGE_KEY='py_guardias_mundial26_v1';
+let matches=FIXTURE.map((m,i)=>({...m,id:i,g1:'',g2:'',simGroup:null,arg:m.arg||false}));
+
+function detectSim(){
+  const by={};
+  matches.forEach(m=>{const k=m.date+'_'+m.time;if(!by[k])by[k]=[];by[k].push(m.id);});
+  let sg=0;
+  Object.values(by).forEach(ids=>{if(ids.length>1){ids.forEach(id=>{matches[id].simGroup=sg;});sg++;}});
+}
+
+function isNight(m){const h=parseInt(m.time);return h>=19||h===0||h===1;}
+function isArg(m){return m.arg;}
+function isPrio(m){return['Brasil','Francia','Alemania','Inglaterra','Portugal','Uruguay','España'].some(t=>m.t1.includes(t)||m.t2.includes(t));}
+function vickyAvail(m){return!['2026-06-23','2026-06-24'].includes(m.date);}
+function avail(p,m){if(p==='Vicky')return vickyAvail(m);return true;}
+
+function isPastiBlocked(m){
+  if(m.date==='2026-06-23'&&isNight(m)) return true;
+  if(m.date==='2026-06-25'&&m.time==='20:00'&&(m.t1.includes('Túnez')||m.t2.includes('Países'))) return true;
+  return false;
+}
+
+function getBlocks(){
+  const bl=[],seen={};
+  matches.forEach(m=>{
+    if(m.simGroup!==null){if(!seen[m.simGroup]){seen[m.simGroup]=true;bl.push(m);}}
+    else bl.push(m);
+  });
+  return bl;
+}
+
+function buildDefault(){
+  const load={},nload={};
+  PEOPLE.forEach(p=>{load[p]=0;nload[p]=0;});
+  const sd={};
+  const bl=getBlocks();
+
+  function blocked(p,m){
+    if(!avail(p,m)) return true;
+    if(p==='Pasti'&&isPastiBlocked(m)) return true;
+    return false;
+  }
+
+  function asgn(b){
+    if(b.simGroup!==null&&sd[b.simGroup]!==undefined){
+      const r=sd[b.simGroup];
+      matches.forEach(m=>{if(m.simGroup===b.simGroup){m.g1=r.g1;m.g2=r.g2;}});
+      return;
+    }
+    const mainPool=MAIN.filter(p=>!blocked(p,b));
+    mainPool.sort((a,c)=>isNight(b)?nload[a]-nload[c]:load[a]-load[c]);
+    const g1=mainPool.length?mainPool[0]:'Estefi';
+    const pool2=PEOPLE.filter(p=>p!==g1&&!blocked(p,b));
+    pool2.sort((a,c)=>isNight(b)?nload[a]-nload[c]:load[a]-load[c]);
+    const g2=pool2.length?pool2[0]:(PEOPLE.find(p=>p!==g1)||'Estefi');
+    if(!b.arg){load[g1]++;load[g2]++;if(isNight(b)){nload[g1]++;nload[g2]++;}}
+    const res={g1,g2};
+    if(b.simGroup!==null) sd[b.simGroup]=res;
+    if(b.simGroup!==null) matches.forEach(m=>{if(m.simGroup===b.simGroup){m.g1=res.g1;m.g2=res.g2;}});
+    else{matches[b.id].g1=res.g1;matches[b.id].g2=res.g2;}
+  }
+
+  bl.filter(b=>!b.arg).sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time)).forEach(b=>asgn(b));
+  bl.filter(b=>b.arg).forEach(b=>asgn(b));
+
+  // Rotar posición para no revelar patrón principal
+  let rot=0;
+  matches.filter(m=>m.g1&&!m.arg).forEach(m=>{
+    if(rot%2===1){const t=m.g1;m.g1=m.g2;m.g2=t;}
+    rot++;
+  });
+
+  return matches.map(m=>({id:m.id,g1:m.g1,g2:m.g2}));
+}
+
+function applyData(data){
+  data.forEach(d=>{
+    const m=matches.find(x=>x.id===d.id);
+    if(m){m.g1=d.g1;m.g2=d.g2;}
+  });
+}
+
+function saveLocal(data){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}catch(e){}
+}
+
+function loadLocal(){
+  try{const v=localStorage.getItem(STORAGE_KEY);return v?JSON.parse(v):null;}catch(e){return null;}
+}
+
+function setStatus(txt){document.getElementById('sync-status').innerHTML=txt;}
+
+function loadAndRender(){
+  setStatus('Cargando...');
+  const local=loadLocal();
+  if(local){
+    applyData(local);
+    setStatus('&#10003; Actualizado &middot; '+new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}));
+  } else {
+    const def=buildDefault();
+    applyData(def);
+    saveLocal(def);
+    setStatus('&#10003; Distribución inicial lista');
+  }
+  render();
+}
+
+function onChange(id,field,val){
+  matches[id][field]=val;
+  const sg=matches[id].simGroup;
+  if(sg!==null) matches.forEach(m=>{if(m.simGroup===sg&&m.id!==id)m[field]=val;});
+  const data=matches.map(m=>({id:m.id,g1:m.g1,g2:m.g2}));
+  saveLocal(data);
+  setStatus('&#10003; Guardado &middot; '+new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}));
+  render();
+}
+
+function fmtD(d){
+  const[y,mo,da]=d.split('-');
+  const months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const days=['dom','lun','mar','mi&eacute;','jue','vie','s&aacute;b'];
+  return days[new Date(+y,+mo-1,+da).getDay()].toUpperCase()+' '+da+' '+months[+mo-1].toUpperCase();
+}
+
+function cc(m){
+  let c='mc';
+  if(isArg(m))c+=' arg';
+  else if(isPrio(m))c+=' prio';
+  else if(m.simGroup!==null)c+=' sim';
+  if(isNight(m))c+=' night';
+  return c;
+}
+
+function getCounts(){
+  const gc={},nc={};PEOPLE.forEach(p=>{gc[p]=0;nc[p]=0;});
+  const seen={};
+  matches.filter(m=>!m.arg).forEach(m=>{
+    const k=m.simGroup!==null?'s'+m.simGroup:'i'+m.id;
+    if(seen[k])return;seen[k]=true;
+    if(m.g1){gc[m.g1]++;if(isNight(m))nc[m.g1]++;}
+    if(m.g2){gc[m.g2]++;if(isNight(m))nc[m.g2]++;}
+  });
+  return{gc,nc};
+}
+
+function renderSbar(){
+  const{gc,nc}=getCounts();
+  document.getElementById('sbar').innerHTML=
+    PEOPLE.map(p=>`<div class="si"><div class="sn">${p}</div><div class="sv"><span class="st">${gc[p]}</span><span class="sni">&#127761;${nc[p]}</span></div></div>`).join('');
+}
+
+function renderCal(){
+  const gr={};
+  matches.forEach(m=>{if(!gr[m.date])gr[m.date]=[];gr[m.date].push(m);});
+  let h='';
+  Object.keys(gr).sort().forEach(date=>{
+    h+=`<div class="day-block"><div class="day-label">${fmtD(date)}</div>`;
+    gr[date].sort((a,b)=>a.time.localeCompare(b.time)).forEach(m=>{
+      const tags=[];
+      if(isNight(m))tags.push('<span class="tag tnight">noche</span>');
+      if(isArg(m))tags.push('<span class="tag targ">ARG &middot; no cuenta</span>');
+      if(m.simGroup!==null)tags.push('<span class="tag tsim">simult&aacute;neo</span>');
+      if(isPrio(m)&&!isArg(m))tags.push('<span class="tag tprio">prioritario</span>');
+      const g1o=PEOPLE.map(p=>`<option value="${p}"${m.g1===p?' selected':''}>${p}</option>`).join('');
+      const g2o=PEOPLE.map(p=>`<option value="${p}"${m.g2===p?' selected':''}>${p}</option>`).join('');
+      h+=`<div class="${cc(m)}">
+        <div><div class="mtime">${m.time} hs</div><div class="mtags">${tags.join('')}</div></div>
+        <div><div class="mteams">${m.t1} vs ${m.t2}</div><div class="mgroup">Grupo ${m.g}</div></div>
+        <div class="pc"><div class="plbl">Guardia 1</div><select class="psel" onchange="onChange(${m.id},'g1',this.value)"><option value="">—</option>${g1o}</select></div>
+        <div class="pc"><div class="plbl">Guardia 2</div><select class="psel" onchange="onChange(${m.id},'g2',this.value)"><option value="">—</option>${g2o}</select></div>
+      </div>`;
+    });
+    h+='</div>';
+  });
+  document.getElementById('cal').innerHTML=h;
+}
+
+function renderPer(){
+  const{gc,nc}=getCounts();
+  const byP={};PEOPLE.forEach(p=>byP[p]=[]);
+  const seen={};
+  matches.forEach(m=>{
+    const k=m.simGroup!==null?'s'+m.simGroup:'i'+m.id;
+    if(seen[k])return;seen[k]=true;
+    [m.g1,m.g2].forEach(p=>{if(p&&byP[p])byP[p].push(m);});
+  });
+  let h='<div class="pgrid">';
+  PEOPLE.forEach(p=>{
+    const my=byP[p].sort((a,b)=>a.date.localeCompare(b.date));
+    h+=`<div class="pcard${MAIN.includes(p)?' main':''}">
+      <div class="pch"><div class="pcname">${p}</div></div>
+      <div class="pcstats">
+        <span class="ppill ptot">${gc[p]} partidos</span>
+        <span class="ppill pnig">&#127761; ${nc[p]} noches</span>
+      </div>
+      <div class="pcmatches">`;
+    if(!my.length){h+='<span style="color:#ccc">Sin asignaciones</span>';}
+    else my.forEach(m=>{
+      const dot=isArg(m)?'#378ADD':isPrio(m)?'#1D9E75':isNight(m)?'#D97706':'#ddd';
+      const ab=isArg(m)?' <span style="color:#1E40AF;font-size:10px;font-weight:600">ARG</span>':'';
+      h+=`<div class="pmrow"><div class="pmdot" style="background:${dot}"></div><span>${fmtD(m.date)} ${m.time} &middot; ${m.t1} vs ${m.t2}${ab}</span></div>`;
+    });
+    h+='</div></div>';
+  });
+  h+='</div>';
+  document.getElementById('per').innerHTML=h;
+}
+
+function render(){renderCal();renderPer();renderSbar();}
+
+function sv(v){
+  document.getElementById('cal').classList.toggle('hidden',v!=='cal');
+  document.getElementById('per').classList.toggle('hidden',v!=='per');
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&v==='cal')||(i===1&&v==='per')));
+}
+
+detectSim();
+loadAndRender();
+</script>
+</body>
+</html>
